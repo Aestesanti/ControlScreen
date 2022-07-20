@@ -47,7 +47,7 @@ def randomiceIntensity():
 
     return moveXIntensity, moveYIntensity
 
-startMoveBtn = Button(root, text="Start Moving", command=startMove)
+startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove)
 statusLbl = Label(root, text="Etiqueta de estado")
 
 startMoveBtn.focus()
