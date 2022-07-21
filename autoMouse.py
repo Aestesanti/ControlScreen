@@ -9,6 +9,7 @@ root.geometry("200x100")
 moveIntensity = 100
 moveTransition = 0.5
 isLoopMove = True
+pyautogui.FAILSAFE=False
 
 def startMove(*args):
     global isLoopMove
@@ -19,8 +20,12 @@ def startMove(*args):
 
         x, y = globalSituation()
         moveX, moveY = randomiceIntensity()
-        pyautogui.moveTo(x+moveX, y+moveY, moveTransition)
-        root.after(500, startMove, isLoopMove)
+        if pyautogui.onScreen(x+moveX, y+moveY):
+            pyautogui.moveTo(x+moveX, y+moveY, moveTransition)
+            root.after(500, startMove, isLoopMove)
+        else:
+            print("REPETIMOS")
+            root.after(500, startMove, isLoopMove)
     else:
         print ("paramos")        
         isLoopMove = True
@@ -31,6 +36,7 @@ def finishMove(*args):
     isLoopMove = False
     startMoveBtn.config(background="SystemButtonFace", relief="raised")
     statusLbl.config(text="Etiqueta de estado")
+    root.update()
 
 def globalSituation():
     ressX, ressY = pyautogui.size()
@@ -42,8 +48,8 @@ def globalSituation():
     return positionX, positionY
 
 def randomiceIntensity():
-    moveXIntensity = randrange(-500,500)
-    moveYIntensity = randrange(-500,500)     
+    moveXIntensity = randrange(-250,250)
+    moveYIntensity = randrange(-250,250)     
 
     return moveXIntensity, moveYIntensity
 
