@@ -4,7 +4,7 @@ import pyautogui
 
 root = Tk()
 root.title("MoveController v0.0")
-root.geometry("200x100")
+root.geometry("200x120")
 root.eval("tk::PlaceWindow . center")
 
 moveIntensity = 100
@@ -39,10 +39,11 @@ def finishMove(*args):
     statusLbl.config(text="Etiqueta de estado")
     root.update()
 
-def globalSituation():
-    ressX, ressY = pyautogui.size()
-    print("Current screen res: X=", ressX, "Y=", ressY)
+def currentResolution():
+    return pyautogui.size()
 
+
+def globalSituation():
     positionX, positionY = pyautogui.position()
     print("Mouse position: X=", positionX, "Y=", positionY)
 
@@ -54,13 +55,18 @@ def randomiceIntensity():
 
     return moveXIntensity, moveYIntensity
 
+resX, resY = currentResolution()
+configResLblText = "Your resolution is: " + str(resX) + "x" + str(resY)
+
 startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove)
 statusLbl = Label(root, text="Etiqueta de estado")
+configResLbl = Label(root, text=configResLblText)
 
 startMoveBtn.focus()
 startMoveBtn.bind("a", finishMove)
 
 statusLbl.pack()
 startMoveBtn.pack()
+configResLbl.pack()
 
 root.mainloop()
