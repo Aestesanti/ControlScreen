@@ -5,6 +5,7 @@ import pyautogui
 root = Tk()
 root.title("MoveController v0.0")
 root.geometry("200x100")
+root.eval("tk::PlaceWindow . center")
 
 moveIntensity = 100
 moveTransition = 0.5
