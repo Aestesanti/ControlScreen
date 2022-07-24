@@ -1,16 +1,21 @@
 from tkinter import Button, Label, Tk
 from random import randrange
 import pyautogui
+from PIL import ImageGrab
 
 root = Tk()
 root.title("MoveController v0.0")
-root.geometry("200x120")
+root.geometry("200x140")
 root.eval("tk::PlaceWindow . center")
 
 moveIntensity = 100
 moveTransition = 0.5
 isLoopMove = True
 pyautogui.FAILSAFE=False
+
+def controlScreen():
+    image = ImageGrab.grab(all_screens=True)
+    image.save("test.png")
 
 def startMove(*args):
     global isLoopMove
@@ -59,6 +64,7 @@ resX, resY = currentResolution()
 configResLblText = "Your resolution is: " + str(resX) + "x" + str(resY)
 
 startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove)
+controlScreenBtn = Button(root, text="Control Screen", command=controlScreen)
 statusLbl = Label(root, text="Etiqueta de estado")
 configResLbl = Label(root, text=configResLblText)
 
@@ -67,6 +73,7 @@ startMoveBtn.bind("a", finishMove)
 
 statusLbl.pack()
 startMoveBtn.pack()
+controlScreenBtn.pack()
 configResLbl.pack()
 
 root.mainloop()
