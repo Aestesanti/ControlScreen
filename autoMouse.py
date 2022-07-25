@@ -1,6 +1,7 @@
 from tkinter import Button, Label, Tk
 from random import randrange
 import pyautogui
+import pygetwindow
 from PIL import ImageGrab
 
 root = Tk()
@@ -11,11 +12,16 @@ root.eval("tk::PlaceWindow . center")
 moveIntensity = 100
 moveTransition = 0.5
 isLoopMove = True
+isLoopControl = True
 pyautogui.FAILSAFE=False
 
 def controlScreen():
     image = ImageGrab.grab(all_screens=True)
     image.save("test.png")
+    listTitles = pygetwindow.getActiveWindow().title
+    print (listTitles)
+    if isLoopControl:
+        root.after(3000, controlScreen)
 
 def startMove(*args):
     global isLoopMove
@@ -28,10 +34,10 @@ def startMove(*args):
         moveX, moveY = randomiceIntensity()
         if pyautogui.onScreen(x+moveX, y+moveY):
             pyautogui.moveTo(x+moveX, y+moveY, moveTransition)
-            root.after(500, startMove, isLoopMove)
+            root.after(500, startMove)
         else:
             print("REPETIMOS")
-            root.after(500, startMove, isLoopMove)
+            root.after(500, startMove)
     else:
         print ("paramos")        
         isLoopMove = True
