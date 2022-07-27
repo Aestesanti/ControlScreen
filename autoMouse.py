@@ -13,20 +13,46 @@ moveIntensity = 100
 moveTransition = 0.5
 isLoopMove = True
 isLoopControl = True
-pyautogui.FAILSAFE=False
+listApssAtStart = []
+pyautogui.FAILSAFE = False
 
-def controlScreen():
-    image = ImageGrab.grab(all_screens=True)
-    image.save("test.png")
-    listTitles = pygetwindow.getActiveWindow().title
-    print (listTitles)
+def configControlScreen():
+    global listApssAtStart
+    controlScreenBtn.config(background="green", relief="sunken")
+    root.update()
+    listApssAtStart = pygetwindow.getAllTitles()
+    print("Hay "+ str(len(listApssAtStart)) + " ventanas ejecutandose")
+    startControlScreen()
+
+def startControlScreen():
+    global isLoopControl, listApssAtStart
     if isLoopControl:
-        root.after(3000, controlScreen)
+        listApssAtNow = pygetwindow.getAllTitles()
+        
+        if len(listApssAtNow) > len(listApssAtStart):
+            image = ImageGrab.grab(all_screens=True)
+            image.save("test.png")
+            listTitles = pygetwindow.getActiveWindow().title
+            print("Salta la alarma con: " + listTitles)
+            
+        root.after(3000, startControlScreen)            
+    else:
+        isLoopControl = True
+        listApssAtStart.clear()
+        print("Paramos el control de screen")
+
+
+def stopControlScreen(*args):
+    global isLoopControl
+    isLoopControl = False
+    controlScreenBtn.config(background="SystemButtonFace", relief="raised")
+    root.update()
+
 
 def startMove(*args):
     global isLoopMove
     if isLoopMove:
-        startMoveBtn.config(background="red", relief="sunken")        
+        startMoveBtn.config(background="red", relief="sunken")
         statusLbl.config(text="Pulsa tecla 'a' para salir")
         root.update()
 
@@ -39,7 +65,7 @@ def startMove(*args):
             print("REPETIMOS")
             root.after(500, startMove)
     else:
-        print ("paramos")        
+        print("paramos")
         isLoopMove = True
 
 
@@ -49,6 +75,7 @@ def finishMove(*args):
     startMoveBtn.config(background="SystemButtonFace", relief="raised")
     statusLbl.config(text="Etiqueta de estado")
     root.update()
+
 
 def currentResolution():
     return pyautogui.size()
@@ -60,22 +87,25 @@ def globalSituation():
 
     return positionX, positionY
 
+
 def randomiceIntensity():
-    moveXIntensity = randrange(-250,250)
-    moveYIntensity = randrange(-250,250)     
+    moveXIntensity = randrange(-250, 250)
+    moveYIntensity = randrange(-250, 250)
 
     return moveXIntensity, moveYIntensity
+
 
 resX, resY = currentResolution()
 configResLblText = "Your resolution is: " + str(resX) + "x" + str(resY)
 
 startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove)
-controlScreenBtn = Button(root, text="Control Screen", command=controlScreen)
+controlScreenBtn = Button(root, text="Screen Control", command=configControlScreen)
 statusLbl = Label(root, text="Etiqueta de estado")
 configResLbl = Label(root, text=configResLblText)
 
-startMoveBtn.focus()
-startMoveBtn.bind("a", finishMove)
+root.focus()
+root.bind("a", finishMove)
+root.bind("s", stopControlScreen)
 
 statusLbl.pack()
 startMoveBtn.pack()
