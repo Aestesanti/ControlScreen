@@ -1,20 +1,32 @@
-from tkinter import Button, Label, Tk
+from tkinter import Button, Checkbutton, Entry, IntVar, Label, Tk
 from random import randrange
 import pyautogui
 import pygetwindow
 from PIL import ImageGrab
+from playsound import playsound
 
 root = Tk()
-root.title("MoveController v0.0")
-root.geometry("200x140")
+root.title("MoveController v0.1")
+root.geometry("275x175")
 root.eval("tk::PlaceWindow . center")
 
+#Variables list:
+soundRoute = "sounds/submarine-submersion-alarm.mp3"
 moveIntensity = 100
 moveTransition = 0.5
 isLoopMove = True
 isLoopControl = True
+checkSCType_Var = IntVar(value=1)
 listApssAtStart = []
 pyautogui.FAILSAFE = False
+
+def cUEntry():
+    if checkSCType_Var.get() == 1:
+        appTitleToFind.config(state="disabled")
+        print("NO ACTIVO ENTRY")
+    elif checkSCType_Var.get() == 0:
+        appTitleToFind.config(state="normal")
+        print("Activo entry")
 
 def configControlScreen():
     global listApssAtStart
@@ -28,12 +40,18 @@ def startControlScreen():
     global isLoopControl, listApssAtStart
     if isLoopControl:
         listApssAtNow = pygetwindow.getAllTitles()
-        
-        if len(listApssAtNow) > len(listApssAtStart):
-            image = ImageGrab.grab(all_screens=True)
-            image.save("test.png")
-            listTitles = pygetwindow.getActiveWindow().title
-            print("Salta la alarma con: " + listTitles)
+
+        if checkSCType_Var.get() == 0:
+            print("DEBERIA BUSCAR EL PROGRAMA ESCRITO EN EL CAMPO")
+
+        elif checkSCType_Var.get() == 1:        
+
+            if len(listApssAtNow) > len(listApssAtStart):
+                image = ImageGrab.grab(all_screens=True)
+                image.save("test.png")
+                listTitles = pygetwindow.getActiveWindow().title
+                #playsound(soundRoute)
+                print("Salta la alarma con: " + listTitles)
             
         root.after(3000, startControlScreen)            
     else:
@@ -100,15 +118,21 @@ configResLblText = "Your resolution is: " + str(resX) + "x" + str(resY)
 
 startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove)
 controlScreenBtn = Button(root, text="Screen Control", command=configControlScreen)
+checkSCType = Checkbutton(root, text="Any", variable=checkSCType_Var, command=cUEntry)
+appTitleToFind = Entry(root, state="disabled")
 statusLbl = Label(root, text="Etiqueta de estado")
 configResLbl = Label(root, text=configResLblText)
 
 root.focus()
 root.bind("a", finishMove)
+root.bind("A", finishMove)
 root.bind("s", stopControlScreen)
+root.bind("S", stopControlScreen)
 
 statusLbl.pack()
 startMoveBtn.pack()
+checkSCType.pack()
+appTitleToFind.pack()
 controlScreenBtn.pack()
 configResLbl.pack()
 
