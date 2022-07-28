@@ -3,7 +3,7 @@ from random import randrange
 import pyautogui
 import pygetwindow
 from PIL import ImageGrab
-from playsound import playsound
+import simpleaudio
 
 root = Tk()
 root.title("MoveController v0.1")
@@ -11,7 +11,8 @@ root.geometry("275x175")
 root.eval("tk::PlaceWindow . center")
 
 #Variables list:
-soundRoute = "sounds/submarine-submersion-alarm.mp3"
+soundRoute = "sounds/submarine-submersion-alarm.wav"
+sound = simpleaudio.WaveObject.from_wave_file(soundRoute)
 moveIntensity = 100
 moveTransition = 0.5
 isLoopMove = True
@@ -50,8 +51,9 @@ def startControlScreen():
                 image = ImageGrab.grab(all_screens=True)
                 image.save("test.png")
                 listTitles = pygetwindow.getActiveWindow().title
-                #playsound(soundRoute)
+                sound.play()
                 print("Salta la alarma con: " + listTitles)
+                autoStopControlScreen()
             
         root.after(3000, startControlScreen)            
     else:
@@ -59,12 +61,16 @@ def startControlScreen():
         listApssAtStart.clear()
         print("Paramos el control de screen")
 
+def autoStopControlScreen(*args):
+    global isLoopControl
+    isLoopControl = False
 
 def stopControlScreen(*args):
     global isLoopControl
     isLoopControl = False
     controlScreenBtn.config(background="SystemButtonFace", relief="raised")
     root.update()
+    simpleaudio.stop_all()
 
 
 def startMove(*args):
