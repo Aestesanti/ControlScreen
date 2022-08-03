@@ -4,6 +4,7 @@ import pyautogui
 import pygetwindow
 from PIL import ImageGrab
 import simpleaudio
+import pywhatkit
 
 root = Tk()
 root.title("MoveController v0.1")
@@ -11,6 +12,7 @@ root.geometry("275x175")
 root.eval("tk::PlaceWindow . center")
 
 #Variables list:
+phoneToAlert = "+34617333792"
 soundRoute = "sounds/submarine-submersion-alarm.wav"
 sound = simpleaudio.WaveObject.from_wave_file(soundRoute)
 moveIntensity = 100
@@ -20,6 +22,9 @@ isLoopControl = True
 checkSCType_Var = IntVar(value=1)
 listApssAtStart = []
 pyautogui.FAILSAFE = False
+
+def testWhats():
+    pywhatkit.sendwhatmsg_instantly(phoneToAlert, "Hola", tab_close=True)    
 
 def cUEntry():
     if checkSCType_Var.get() == 1:
@@ -60,6 +65,9 @@ def startControlScreen():
         isLoopControl = True
         listApssAtStart.clear()
         print("Paramos el control de screen")
+        #Paramos tb el automove
+        finishMove()
+        startMove()
 
 def autoStopControlScreen(*args):
     global isLoopControl
