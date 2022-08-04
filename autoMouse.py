@@ -1,4 +1,4 @@
-from tkinter import Button, Checkbutton, Entry, IntVar, Label, StringVar, Tk, Toplevel
+from tkinter import Button, Checkbutton, Entry, IntVar, Label, StringVar, Tk, Toplevel, messagebox
 from random import randrange
 import pyautogui
 import pygetwindow
@@ -35,12 +35,15 @@ def configMenuAler():
         menuAlertRoot.geometry("200x50")
         menuAlertRoot.grab_set()
 
-        phoneToAlert_Lbl = Label(menuAlertRoot, text="Introduce the phone to alert:")
+        phoneToAlert_Lbl = Label(menuAlertRoot, text="Phone to alert:")
         phoneToAlert = Entry(menuAlertRoot, textvariable=phoneToAlert_Var)
 
         def setPhoneNumber(*args):
-            print (phoneToAlert_Var.get())
-            menuAlertRoot.destroy()
+            if "+" == phoneToAlert_Var.get()[0] and phoneToAlert_Var.get().replace("+","").isnumeric():
+                print (phoneToAlert_Var.get())
+                menuAlertRoot.destroy()
+            else:
+                messagebox.showerror("Phone number error:","Incorrect phone number, please ensure you have entered country code (+34..) and only numbers.")
 
         phoneToAlert.focus()
         phoneToAlert.bind('<Return>', setPhoneNumber)        
@@ -163,7 +166,7 @@ startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=star
 controlScreenBtn = Button(root, text="Screen Control", command=testWhats)
 checkSCType = Checkbutton(root, text="Any", variable=checkSCType_Var, command=cUEntry)
 checkAlertSound = Checkbutton(root, text="AlertSound", variable=checkAlertSound_Var)
-checkAlertMssg = Checkbutton(root, text="SendAlert", variable=checkAlertMssg_Var, command=configMenuAler)
+checkAlertMssg = Checkbutton(root, text="WhatsappAlert", variable=checkAlertMssg_Var, command=configMenuAler)
 appTitleToFind = Entry(root, state="disabled")
 statusLbl = Label(root, text="Etiqueta de estado")
 configResLbl = Label(root, text=configResLblText)
