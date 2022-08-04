@@ -1,4 +1,4 @@
-from tkinter import Button, Checkbutton, Entry, IntVar, Label, Tk
+from tkinter import Button, Checkbutton, Entry, IntVar, Label, StringVar, Tk, Toplevel
 from random import randrange
 import pyautogui
 import pygetwindow
@@ -12,7 +12,7 @@ root.geometry("275x175")
 root.eval("tk::PlaceWindow . center")
 
 #Variables list:
-phoneToAlert = "+34617333792"
+phoneToAlert_Var = StringVar()
 soundRoute = "sounds/submarine-submersion-alarm.wav"
 sound = simpleaudio.WaveObject.from_wave_file(soundRoute)
 moveIntensity = 100
@@ -20,11 +20,35 @@ moveTransition = 0.5
 isLoopMove = True
 isLoopControl = True
 checkSCType_Var = IntVar(value=1)
+checkAlertSound_Var = IntVar(value=1)
+checkAlertMssg_Var = IntVar(value=0)
 listApssAtStart = []
 pyautogui.FAILSAFE = False
 
 def testWhats():
-    pywhatkit.sendwhatmsg_instantly(phoneToAlert, "Hola", tab_close=True)    
+    pywhatkit.sendwhatmsg_instantly(phoneToAlert_Var.get(), "Hola", tab_close=True)    
+
+def configMenuAler():
+    if checkAlertMssg_Var.get() == 1:
+        menuAlertRoot = Toplevel(root)  
+        menuAlertRoot.title("Config Message Alert")
+        menuAlertRoot.geometry("200x50")
+        menuAlertRoot.grab_set()
+
+        phoneToAlert_Lbl = Label(menuAlertRoot, text="Introduce the phone to alert:")
+        phoneToAlert = Entry(menuAlertRoot, textvariable=phoneToAlert_Var)
+
+        def setPhoneNumber(*args):
+            print (phoneToAlert_Var.get())
+            menuAlertRoot.destroy()
+
+        phoneToAlert.focus()
+        phoneToAlert.bind('<Return>', setPhoneNumber)        
+
+        phoneToAlert_Lbl.pack()
+        phoneToAlert.pack()
+
+        menuAlertRoot.mainloop()
 
 def cUEntry():
     if checkSCType_Var.get() == 1:
@@ -56,7 +80,7 @@ def startControlScreen():
                 image = ImageGrab.grab(all_screens=True)
                 image.save("test.png")
                 listTitles = pygetwindow.getActiveWindow().title
-                sound.play()
+                playSoundAlert()                
                 print("Salta la alarma con: " + listTitles)
                 autoStopControlScreen()
             
@@ -68,6 +92,11 @@ def startControlScreen():
         #Paramos tb el automove
         finishMove()
         startMove()
+
+def playSoundAlert():
+    if checkAlertSound_Var.get() == 1:
+        sound.play()
+
 
 def autoStopControlScreen(*args):
     global isLoopControl
@@ -131,8 +160,10 @@ resX, resY = currentResolution()
 configResLblText = "Your resolution is: " + str(resX) + "x" + str(resY)
 
 startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove)
-controlScreenBtn = Button(root, text="Screen Control", command=configControlScreen)
+controlScreenBtn = Button(root, text="Screen Control", command=testWhats)
 checkSCType = Checkbutton(root, text="Any", variable=checkSCType_Var, command=cUEntry)
+checkAlertSound = Checkbutton(root, text="AlertSound", variable=checkAlertSound_Var)
+checkAlertMssg = Checkbutton(root, text="SendAlert", variable=checkAlertMssg_Var, command=configMenuAler)
 appTitleToFind = Entry(root, state="disabled")
 statusLbl = Label(root, text="Etiqueta de estado")
 configResLbl = Label(root, text=configResLblText)
@@ -147,6 +178,8 @@ statusLbl.pack()
 startMoveBtn.pack()
 checkSCType.pack()
 appTitleToFind.pack()
+checkAlertSound.pack()
+checkAlertMssg.pack()
 controlScreenBtn.pack()
 configResLbl.pack()
 
