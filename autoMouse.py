@@ -13,6 +13,7 @@ root.eval("tk::PlaceWindow . center")
 
 #Variables list:
 phoneToAlert_Var = StringVar()
+appTitleToFind_Var = StringVar()
 soundRoute = "sounds/submarine-submersion-alarm.wav"
 sound = simpleaudio.WaveObject.from_wave_file(soundRoute)
 moveIntensity = 100
@@ -71,6 +72,8 @@ def cUEntry():
 def configControlScreen():
     global listApssAtStart
     controlScreenBtn.config(background="green", relief="sunken")
+    appTitleToFind.config(state="disabled")
+    root.focus()
     root.update()
     listApssAtStart = pygetwindow.getAllTitles()
     print("Hay "+ str(len(listApssAtStart)) + " ventanas ejecutandose")
@@ -82,7 +85,12 @@ def startControlScreen():
         listApssAtNow = pygetwindow.getAllTitles()
 
         if checkSCType_Var.get() == 0:
-            print("DEBERIA BUSCAR EL PROGRAMA ESCRITO EN EL CAMPO")
+            print ("BUSCANDO APP CONCRETA")
+            findApp = appTitleToFind_Var.get()
+            
+            for app in listApssAtNow:
+                if findApp in str(app):
+                    print("APP ENCONTRADA SALTANDO ALARMA....")
 
         elif checkSCType_Var.get() == 1:        
 
@@ -122,6 +130,7 @@ def stopControlScreen(*args):
     global isLoopControl
     isLoopControl = False
     controlScreenBtn.config(background="SystemButtonFace", relief="raised")
+    cUEntry()
     root.update()
     simpleaudio.stop_all()
 
@@ -130,7 +139,7 @@ def startMove(*args):
     global isLoopMove
     if isLoopMove:
         startMoveBtn.config(background="red", relief="sunken")
-        statusLbl.config(text="Pulsa tecla 'a' para salir")
+        statusLbl.config(text="Pulsa 'Alt + a' para salir")
         root.update()
 
         x, y = globalSituation()
@@ -180,15 +189,15 @@ controlScreenBtn = Button(root, text="Screen Control", command=configControlScre
 checkSCType = Checkbutton(root, text="Any", variable=checkSCType_Var, command=cUEntry)
 checkAlertSound = Checkbutton(root, text="AlertSound", variable=checkAlertSound_Var)
 checkAlertMssg = Checkbutton(root, text="WhatsappAlert", variable=checkAlertMssg_Var, command=configMenuAler)
-appTitleToFind = Entry(root, state="disabled")
+appTitleToFind = Entry(root, state="disabled", textvariable=appTitleToFind_Var)
 statusLbl = Label(root, text="Etiqueta de estado")
 configResLbl = Label(root, text=configResLblText)
 
 root.focus()
-root.bind("a", finishMove)
-root.bind("A", finishMove)
-root.bind("s", stopControlScreen)
-root.bind("S", stopControlScreen)
+root.bind("<Alt-KeyPress-a>", finishMove)
+root.bind("<Alt-KeyPress-A>", finishMove)
+root.bind("<Alt-KeyPress-s>", stopControlScreen)
+root.bind("<Alt-KeyPress-S>", stopControlScreen)
 
 statusLbl.pack()
 startMoveBtn.pack()
