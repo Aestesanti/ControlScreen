@@ -23,10 +23,7 @@ checkSCType_Var = IntVar(value=1)
 checkAlertSound_Var = IntVar(value=1)
 checkAlertMssg_Var = IntVar(value=0)
 listApssAtStart = []
-pyautogui.FAILSAFE = False
-
-def testWhats():
-    pywhatkit.sendwhatmsg_instantly(phoneToAlert_Var.get(), "Hola", tab_close=True)    
+pyautogui.FAILSAFE = False    
 
 def configMenuAler():
     if checkAlertMssg_Var.get() == 1:
@@ -36,20 +33,30 @@ def configMenuAler():
         menuAlertRoot.grab_set()
 
         phoneToAlert_Lbl = Label(menuAlertRoot, text="Phone to alert:")
-        phoneToAlert = Entry(menuAlertRoot, textvariable=phoneToAlert_Var)
+        phoneToAlert = Entry(menuAlertRoot, textvariable=phoneToAlert_Var)        
 
         def setPhoneNumber(*args):
-            if "+" == phoneToAlert_Var.get()[0] and phoneToAlert_Var.get().replace("+","").isnumeric():
+            if phoneToAlert_Var.get() != "" and "+" == phoneToAlert_Var.get()[0] and phoneToAlert_Var.get().replace("+","").isnumeric():
                 print (phoneToAlert_Var.get())
                 menuAlertRoot.destroy()
+                return True
             else:
+                phoneToAlert_Var.set("")
                 messagebox.showerror("Phone number error:","Incorrect phone number, please ensure you have entered country code (+34..) and only numbers.")
+                return False
+        
+        def testWhats():
+            if setPhoneNumber():
+                pywhatkit.sendwhatmsg_instantly(phoneToAlert_Var.get(), "Test", tab_close=True)            
+        
+        phoneToAlert_TestBtn = Button(menuAlertRoot, text="TestPhone", command=testWhats)
 
         phoneToAlert.focus()
         phoneToAlert.bind('<Return>', setPhoneNumber)        
 
         phoneToAlert_Lbl.pack()
         phoneToAlert.pack()
+        phoneToAlert_TestBtn.pack()
 
         menuAlertRoot.mainloop()
 
@@ -79,11 +86,12 @@ def startControlScreen():
 
         elif checkSCType_Var.get() == 1:        
 
-            if len(listApssAtNow) > len(listApssAtStart):
+            if len(listApssAtNow) > len(listApssAtStart): #Salta la alarma si se cumple
                 image = ImageGrab.grab(all_screens=True)
                 image.save("test.png")
                 listTitles = pygetwindow.getActiveWindow().title
-                playSoundAlert()                
+                playSoundAlert()  
+                sendPhoneAlert()              
                 print("Salta la alarma con: " + listTitles)
                 autoStopControlScreen()
             
@@ -95,6 +103,11 @@ def startControlScreen():
         #Paramos tb el automove
         finishMove()
         startMove()
+
+def sendPhoneAlert():
+    if checkAlertMssg_Var.get() == 1:
+        pywhatkit.sendwhatmsg_instantly(phoneToAlert_Var.get(), "Ha saltado alarma, mando Imagen", tab_close=True)
+    
 
 def playSoundAlert():
     if checkAlertSound_Var.get() == 1:
@@ -163,7 +176,7 @@ resX, resY = currentResolution()
 configResLblText = "Your resolution is: " + str(resX) + "x" + str(resY)
 
 startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove)
-controlScreenBtn = Button(root, text="Screen Control", command=testWhats)
+controlScreenBtn = Button(root, text="Screen Control", command=configControlScreen)
 checkSCType = Checkbutton(root, text="Any", variable=checkSCType_Var, command=cUEntry)
 checkAlertSound = Checkbutton(root, text="AlertSound", variable=checkAlertSound_Var)
 checkAlertMssg = Checkbutton(root, text="WhatsappAlert", variable=checkAlertMssg_Var, command=configMenuAler)
