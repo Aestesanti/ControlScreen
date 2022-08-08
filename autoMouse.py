@@ -5,6 +5,7 @@ import pygetwindow
 from PIL import ImageGrab
 import simpleaudio
 import pywhatkit
+import os
 
 root = Tk()
 root.title("MoveController v0.1")
@@ -48,7 +49,7 @@ def configMenuAler():
         
         def testWhats():
             if setPhoneNumber():
-                pywhatkit.sendwhatmsg_instantly(phoneToAlert_Var.get(), "Test", tab_close=True)            
+                pywhatkit.sendwhatmsg_instantly(phoneToAlert_Var.get(), "Test", tab_close=True, close_time=1)            
         
         phoneToAlert_TestBtn = Button(menuAlertRoot, text="TestPhone", command=testWhats)
 
@@ -97,7 +98,7 @@ def startControlScreen():
             if len(listApssAtNow) > len(listApssAtStart): #Salta la alarma si se cumple
                 activateAlarm()
 
-        root.after(3000, startControlScreen)            
+        root.after(2000, startControlScreen)            
     else:
         isLoopControl = True
         listApssAtStart.clear()
@@ -106,9 +107,9 @@ def startControlScreen():
         finishMove()
         startMove()
 
-def sendPhoneAlert():
+def sendPhoneAlert(nameApp):
     if checkAlertMssg_Var.get() == 1:
-        pywhatkit.sendwhatmsg_instantly(phoneToAlert_Var.get(), "Ha saltado alarma, mando Imagen", tab_close=True)
+        pywhatkit.sendwhats_image(phoneToAlert_Var.get(), "./Screenshot.png", "Ha saltado alarma, con: " + nameApp, tab_close=True)
     
 
 def playSoundAlert():
@@ -118,11 +119,11 @@ def playSoundAlert():
 def activateAlarm(*args):
     global isLoopControl
     image = ImageGrab.grab(all_screens=True)
-    image.save("test.png")
-    listTitles = pygetwindow.getActiveWindow().title
+    image.save("Screenshot.png")    
+    nameApp = pygetwindow.getActiveWindow().title
     playSoundAlert()
-    sendPhoneAlert()
-    print("Salta la alarma con: " + listTitles)
+    sendPhoneAlert(nameApp)
+    os.remove("./Screenshot.png")
     isLoopControl = False
 
 def stopControlScreen(*args):
