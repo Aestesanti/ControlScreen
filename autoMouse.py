@@ -90,19 +90,13 @@ def startControlScreen():
             
             for app in listApssAtNow:
                 if findApp in str(app):
-                    print("APP ENCONTRADA SALTANDO ALARMA....")
+                    activateAlarm()
 
         elif checkSCType_Var.get() == 1:        
 
             if len(listApssAtNow) > len(listApssAtStart): #Salta la alarma si se cumple
-                image = ImageGrab.grab(all_screens=True)
-                image.save("test.png")
-                listTitles = pygetwindow.getActiveWindow().title
-                playSoundAlert()  
-                sendPhoneAlert()              
-                print("Salta la alarma con: " + listTitles)
-                autoStopControlScreen()
-            
+                activateAlarm()
+
         root.after(3000, startControlScreen)            
     else:
         isLoopControl = True
@@ -121,9 +115,14 @@ def playSoundAlert():
     if checkAlertSound_Var.get() == 1:
         sound.play()
 
-
-def autoStopControlScreen(*args):
+def activateAlarm(*args):
     global isLoopControl
+    image = ImageGrab.grab(all_screens=True)
+    image.save("test.png")
+    listTitles = pygetwindow.getActiveWindow().title
+    playSoundAlert()
+    sendPhoneAlert()
+    print("Salta la alarma con: " + listTitles)
     isLoopControl = False
 
 def stopControlScreen(*args):
@@ -133,7 +132,6 @@ def stopControlScreen(*args):
     cUEntry()
     root.update()
     simpleaudio.stop_all()
-
 
 def startMove(*args):
     global isLoopMove
