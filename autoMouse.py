@@ -13,6 +13,7 @@ root.geometry("275x175")
 root.eval("tk::PlaceWindow . center")
 
 #Variables list:
+changeNameApp_Var = StringVar()
 phoneToAlert_Var = StringVar()
 appTitleToFind_Var = StringVar()
 soundRoute = "sounds/submarine-submersion-alarm.wav"
@@ -26,6 +27,15 @@ checkAlertSound_Var = IntVar(value=1)
 checkAlertMssg_Var = IntVar(value=0)
 listApssAtStart = []
 pyautogui.FAILSAFE = False    
+
+def setNameApp(*args):
+    if changeNameApp_Var.get() != "":
+        root.title(changeNameApp_Var.get())
+        root.update()
+        root.focus()
+    else:
+        messagebox.showerror("Wrong app name:", "The name is incorrect")
+        root.focus()
 
 def configMenuAler():
     if checkAlertMssg_Var.get() == 1:
@@ -183,6 +193,8 @@ def randomiceIntensity():
 resX, resY = currentResolution()
 configResLblText = "Your resolution is: " + str(resX) + "x" + str(resY)
 
+changeNameAppLbl = Label(root, text="Name to set")
+changeNameApp = Entry(root, textvariable=changeNameApp_Var)
 startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove)
 controlScreenBtn = Button(root, text="Screen Control", command=configControlScreen)
 checkSCType = Checkbutton(root, text="Any", variable=checkSCType_Var, command=cUEntry)
@@ -197,7 +209,10 @@ root.bind("<Alt-KeyPress-a>", finishMove)
 root.bind("<Alt-KeyPress-A>", finishMove)
 root.bind("<Alt-KeyPress-s>", stopControlScreen)
 root.bind("<Alt-KeyPress-S>", stopControlScreen)
+changeNameApp.bind("<Return>", setNameApp)
 
+changeNameAppLbl.pack()
+changeNameApp.pack()
 statusLbl.pack()
 startMoveBtn.pack()
 checkSCType.pack()
