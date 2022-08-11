@@ -1,5 +1,6 @@
 from tkinter import Button, Checkbutton, Entry, IntVar, Label, StringVar, Tk, Toplevel, messagebox
 from random import randrange
+from tkinter.ttk import Separator
 import pyautogui
 import pygetwindow
 from PIL import ImageGrab
@@ -34,7 +35,7 @@ def setNameApp(*args):
         root.update()
         root.focus()
     else:
-        messagebox.showerror("Wrong app name:", "The name is incorrect")
+        root.title("MoveController v0.1")
         root.focus()
 
 def configMenuAler():
@@ -195,6 +196,7 @@ configResLblText = "Your resolution is: " + str(resX) + "x" + str(resY)
 
 changeNameAppLbl = Label(root, text="Name to set")
 changeNameApp = Entry(root, textvariable=changeNameApp_Var)
+separator_1 = Separator(root, orient="horizontal")
 startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove)
 controlScreenBtn = Button(root, text="Screen Control", command=configControlScreen)
 checkSCType = Checkbutton(root, text="Any", variable=checkSCType_Var, command=cUEntry)
@@ -213,6 +215,7 @@ changeNameApp.bind("<Return>", setNameApp)
 
 changeNameAppLbl.pack()
 changeNameApp.pack()
+separator_1.pack(fill="x", pady=10)
 statusLbl.pack()
 startMoveBtn.pack()
 checkSCType.pack()
