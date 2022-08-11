@@ -9,9 +9,10 @@ import pywhatkit
 import os
 
 root = Tk()
-root.title("MoveController v0.1")
+root.title("MoveController v1.0.0")
 #root.geometry("270x150")
 root.eval("tk::PlaceWindow . center")
+root.resizable(False, False)
 
 #Variables list:
 changeNameApp_Var = StringVar()
@@ -42,8 +43,9 @@ def configMenuAler():
     if checkAlertMssg_Var.get() == 1:
         menuAlertRoot = Toplevel(root)  
         menuAlertRoot.title("Config Message Alert")
-        menuAlertRoot.geometry("200x50")
+        #menuAlertRoot.geometry("200x50")
         menuAlertRoot.grab_set()
+        menuAlertRoot.resizable(False, False)
 
         phoneToAlert_Lbl = Label(menuAlertRoot, text="Phone to alert:")
         phoneToAlert = Entry(menuAlertRoot, textvariable=phoneToAlert_Var)        
@@ -60,17 +62,28 @@ def configMenuAler():
         
         def testWhats():
             if setPhoneNumber():
-                pywhatkit.sendwhatmsg_instantly(phoneToAlert_Var.get(), "Test", tab_close=True, close_time=1)            
+                pywhatkit.sendwhatmsg_instantly(phoneToAlert_Var.get(), "Test", tab_close=True, close_time=1)  
+
+        def closeMenuAlert():
+            checkAlertMssg_Var.set(0)
+            phoneToAlert_Var.set("")        
+            menuAlertRoot.destroy()
         
         phoneToAlert_TestBtn = Button(menuAlertRoot, text="TestPhone", command=testWhats)
 
         phoneToAlert.focus()
         phoneToAlert.bind('<Return>', setPhoneNumber)        
 
-        phoneToAlert_Lbl.pack()
-        phoneToAlert.pack()
-        phoneToAlert_TestBtn.pack()
+        phoneToAlert_Lbl.grid(row=0, column=0)
+        phoneToAlert.grid(row=0, column=1)
+        phoneToAlert_TestBtn.grid(row=1, column=0, columnspan=2)
 
+        phoneToAlert.grid_columnconfigure(0, weight=1)
+        phoneToAlert.grid_columnconfigure(1, weight=1)
+
+        menuAlertRoot.config(padx=5, pady=5)
+
+        menuAlertRoot.protocol("WM_DELETE_WINDOW", closeMenuAlert)
         menuAlertRoot.mainloop()
 
 def cUEntry():
