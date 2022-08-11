@@ -9,9 +9,9 @@ import pywhatkit
 import os
 
 root = Tk()
-root.title("MoveController v1.0.0")
-#root.geometry("270x150")
+root.title("ControlScreen v1.0.0")
 root.eval("tk::PlaceWindow . center")
+#root.configure(background="#212F3C")
 root.resizable(False, False)
 
 #Variables list:
@@ -41,9 +41,12 @@ def setNameApp(*args):
 
 def configMenuAler():
     if checkAlertMssg_Var.get() == 1:
+        root_x = root.winfo_x()
+        root_y = root.winfo_y()
+
         menuAlertRoot = Toplevel(root)  
         menuAlertRoot.title("Config Message Alert")
-        #menuAlertRoot.geometry("200x50")
+        menuAlertRoot.geometry(f'+{root_x+50}+{root_y+100}')
         menuAlertRoot.grab_set()
         menuAlertRoot.resizable(False, False)
 
