@@ -156,7 +156,7 @@ def activateAlarm(*args):
 
 def stopControlScreen(*args):
     global isLoopControl
-    isLoopControl = False
+    isLoopControl = True
     controlScreenBtn.config(relief="raised", background="#566573", foreground="#CACFD2")
     cUEntry()
     root.update()
@@ -189,17 +189,14 @@ def finishMove(*args):
     statusLbl.config(text="Etiqueta de estado")
     root.update()
 
-
 def currentResolution():
     return pyautogui.size()
-
 
 def globalSituation():
     positionX, positionY = pyautogui.position()
     print("Mouse position: X=", positionX, "Y=", positionY)
 
     return positionX, positionY
-
 
 def randomiceIntensity():
     moveXIntensity = randrange(-250, 250)
