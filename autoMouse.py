@@ -1,4 +1,4 @@
-from tkinter import Button, Checkbutton, Entry, IntVar, Label, StringVar, Tk, Toplevel, messagebox
+from tkinter import Button, Checkbutton, Entry, IntVar, Label, PhotoImage, StringVar, Tk, Toplevel, messagebox
 from random import randrange
 from tkinter.ttk import Separator
 import pyautogui
@@ -9,10 +9,12 @@ import pywhatkit
 import os
 
 root = Tk()
+icon = PhotoImage(file="./winicon.png")
 root.title("ControlScreen v1.0.0")
 root.eval("tk::PlaceWindow . center")
 root.configure(background="#212F3C")
 root.resizable(False, False)
+root.iconphoto(True, icon)
 
 #Variables list:
 changeNameApp_Var = StringVar()
@@ -220,7 +222,7 @@ checkAlertSound = Checkbutton(root, text="AlertSound", variable=checkAlertSound_
 activebackground="#212F3C", activeforeground="#CACFD2", selectcolor="#808B96")
 checkAlertMssg = Checkbutton(root, text="WhatsappAlert", variable=checkAlertMssg_Var, command=configMenuAler, foreground="#CACFD2", background="#212F3C",
 activebackground="#212F3C", activeforeground="#CACFD2", selectcolor="#808B96")
-appTitleToFind = Entry(root, state="disabled", textvariable=appTitleToFind_Var, background="#808B96", foreground="#CACFD2")
+appTitleToFind = Entry(root, state="disabled", textvariable=appTitleToFind_Var, background="#808B96", foreground="#CACFD2", disabledbackground="#131313", disabledforeground="#DBDBDB")
 statusLbl = Label(root, text="Etiqueta de estado", background="#212F3C", foreground="#CACFD2")
 configResLbl = Label(root, text=configResLblText, background="#212F3C", foreground="#CACFD2")
 
