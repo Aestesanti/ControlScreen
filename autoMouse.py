@@ -11,7 +11,7 @@ import os
 root = Tk()
 root.title("ControlScreen v1.0.0")
 root.eval("tk::PlaceWindow . center")
-#root.configure(background="#212F3C")
+root.configure(background="#212F3C")
 root.resizable(False, False)
 
 #Variables list:
@@ -48,10 +48,11 @@ def configMenuAler():
         menuAlertRoot.title("Config Message Alert")
         menuAlertRoot.geometry(f'+{root_x+50}+{root_y+100}')
         menuAlertRoot.grab_set()
+        menuAlertRoot.config(background="#212F3C")
         menuAlertRoot.resizable(False, False)
 
-        phoneToAlert_Lbl = Label(menuAlertRoot, text="Phone to alert:")
-        phoneToAlert = Entry(menuAlertRoot, textvariable=phoneToAlert_Var)        
+        phoneToAlert_Lbl = Label(menuAlertRoot, text="Phone to alert:", background="#212F3C", foreground="#CACFD2")
+        phoneToAlert = Entry(menuAlertRoot, textvariable=phoneToAlert_Var, background="#808B96", foreground="#CACFD2")        
 
         def setPhoneNumber(*args):
             if phoneToAlert_Var.get() != "" and "+" == phoneToAlert_Var.get()[0] and phoneToAlert_Var.get().replace("+","").isnumeric():
@@ -72,7 +73,7 @@ def configMenuAler():
             phoneToAlert_Var.set("")        
             menuAlertRoot.destroy()
         
-        phoneToAlert_TestBtn = Button(menuAlertRoot, text="TestPhone", command=testWhats)
+        phoneToAlert_TestBtn = Button(menuAlertRoot, text="TestPhone", command=testWhats, background="#566573", foreground="#CACFD2")
 
         phoneToAlert.focus()
         phoneToAlert.bind('<Return>', setPhoneNumber)        
@@ -156,7 +157,7 @@ def activateAlarm(*args):
 def stopControlScreen(*args):
     global isLoopControl
     isLoopControl = False
-    controlScreenBtn.config(background="SystemButtonFace", relief="raised")
+    controlScreenBtn.config(relief="raised", background="#566573", foreground="#CACFD2")
     cUEntry()
     root.update()
     simpleaudio.stop_all()
@@ -184,7 +185,7 @@ def startMove(*args):
 def finishMove(*args):
     global isLoopMove
     isLoopMove = False
-    startMoveBtn.config(background="SystemButtonFace", relief="raised")
+    startMoveBtn.config(background="#566573", relief="raised", foreground="#CACFD2")
     statusLbl.config(text="Etiqueta de estado")
     root.update()
 
@@ -210,18 +211,21 @@ def randomiceIntensity():
 resX, resY = currentResolution()
 configResLblText = "Your resolution is: " + str(resX) + "x" + str(resY)
 
-changeNameAppLbl = Label(root, text="Name to set:")
-changeNameApp = Entry(root, textvariable=changeNameApp_Var)
+changeNameAppLbl = Label(root, text="Name to set:", background="#212F3C", foreground="#CACFD2")
+changeNameApp = Entry(root, textvariable=changeNameApp_Var, background="#808B96", foreground="#CACFD2")
 separator_1 = Separator(root, orient="horizontal")
-startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove)
+startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove, background="#566573", foreground="#CACFD2")
 separator_2 = Separator(root, orient="horizontal")
-controlScreenBtn = Button(root, text="Screen Control", command=configControlScreen)
-checkSCType = Checkbutton(root, text="Any", variable=checkSCType_Var, command=cUEntry)
-checkAlertSound = Checkbutton(root, text="AlertSound", variable=checkAlertSound_Var)
-checkAlertMssg = Checkbutton(root, text="WhatsappAlert", variable=checkAlertMssg_Var, command=configMenuAler)
-appTitleToFind = Entry(root, state="disabled", textvariable=appTitleToFind_Var)
-statusLbl = Label(root, text="Etiqueta de estado")
-configResLbl = Label(root, text=configResLblText)
+controlScreenBtn = Button(root, text="Screen Control", command=configControlScreen, background="#566573", foreground="#CACFD2")
+checkSCType = Checkbutton(root, text="Any", variable=checkSCType_Var, command=cUEntry, background="#212F3C", 
+foreground="#CACFD2", activebackground="#212F3C", activeforeground="#CACFD2", selectcolor="#808B96")
+checkAlertSound = Checkbutton(root, text="AlertSound", variable=checkAlertSound_Var, foreground="#CACFD2", background="#212F3C", 
+activebackground="#212F3C", activeforeground="#CACFD2", selectcolor="#808B96")
+checkAlertMssg = Checkbutton(root, text="WhatsappAlert", variable=checkAlertMssg_Var, command=configMenuAler, foreground="#CACFD2", background="#212F3C",
+activebackground="#212F3C", activeforeground="#CACFD2", selectcolor="#808B96")
+appTitleToFind = Entry(root, state="disabled", textvariable=appTitleToFind_Var, background="#808B96", foreground="#CACFD2")
+statusLbl = Label(root, text="Etiqueta de estado", background="#212F3C", foreground="#CACFD2")
+configResLbl = Label(root, text=configResLblText, background="#212F3C", foreground="#CACFD2")
 
 root.focus()
 root.bind("<Alt-KeyPress-a>", finishMove)
