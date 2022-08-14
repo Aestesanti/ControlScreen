@@ -101,12 +101,14 @@ def cUEntry():
         print("Activo entry")
 
 def configControlScreen():
-    global listApssAtStart
+    global listApssAtStart, isLoopControl
     controlScreenBtn.config(background="green", relief="sunken")
     appTitleToFind.config(state="disabled")
     root.focus()
     root.update()
     listApssAtStart = pygetwindow.getAllTitles()
+    isLoopControl =True
+    statusLbl.config(text="Press 'Alt + s' to cancel all systems")
     print("Hay "+ str(len(listApssAtStart)) + " ventanas ejecutandose")
     startControlScreen()
 
@@ -158,7 +160,7 @@ def activateAlarm(*args):
 
 def stopControlScreen(*args):
     global isLoopControl
-    isLoopControl = True
+    isLoopControl = False
     controlScreenBtn.config(relief="raised", background="#566573", foreground="#CACFD2")
     cUEntry()
     root.update()
@@ -168,7 +170,7 @@ def startMove(*args):
     global isLoopMove
     if isLoopMove:
         startMoveBtn.config(background="red", relief="sunken")
-        statusLbl.config(text="Pulsa 'Alt + a' para salir")
+        statusLbl.config(text="Press 'Alt + a' to cancel movement")
         root.update()
 
         x, y = globalSituation()
