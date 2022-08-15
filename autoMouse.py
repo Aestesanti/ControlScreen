@@ -14,7 +14,8 @@ root.title("ControlScreen v1.0.0")
 root.eval("tk::PlaceWindow . center")
 root.configure(background="#212F3C")
 root.resizable(False, False)
-root.iconphoto(True, icon)
+#root.iconphoto(True, icon)
+root.wm_iconphoto(True, icon)
 
 #Variables list:
 changeNameApp_Var = StringVar()
@@ -228,13 +229,6 @@ appTitleToFind = Entry(root, state="disabled", textvariable=appTitleToFind_Var, 
 statusLbl = Label(root, text="Etiqueta de estado", background="#212F3C", foreground="#CACFD2")
 configResLbl = Label(root, text=configResLblText, background="#212F3C", foreground="#CACFD2")
 
-root.focus()
-root.bind("<Alt-KeyPress-a>", finishMove)
-root.bind("<Alt-KeyPress-A>", finishMove)
-root.bind("<Alt-KeyPress-s>", stopControlScreen)
-root.bind("<Alt-KeyPress-S>", stopControlScreen)
-changeNameApp.bind("<Return>", setNameApp)
-
 changeNameAppLbl.grid(row=0, column=0)
 changeNameApp.grid(row=0, column=1)
 separator_1.grid(row=1, column=0, sticky="ew", columnspan=2, pady=10)
@@ -259,5 +253,12 @@ root.grid_columnconfigure(7, weight=1)
 root.grid_columnconfigure(8, weight=1)
 
 root.config(padx=5, pady=5)
+
+root.focus()
+root.bind("<Alt-KeyPress-a>", finishMove)
+root.bind("<Alt-KeyPress-A>", finishMove)
+root.bind("<Alt-KeyPress-s>", stopControlScreen)
+root.bind("<Alt-KeyPress-S>", stopControlScreen)
+changeNameApp.bind("<Return>", setNameApp)
 
 root.mainloop()
