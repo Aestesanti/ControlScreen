@@ -54,6 +54,7 @@ def configMenuAler():
         menuAlertRoot.resizable(False, False)
 
         phoneToAlert_Lbl = Label(menuAlertRoot, text="Phone to alert:", background="#212F3C", foreground="#CACFD2")
+        phoneToAlert_Lb2 = Label(menuAlertRoot, text="To set phone press Enter or test button", background="#212F3C", foreground="#CACFD2")
         phoneToAlert = Entry(menuAlertRoot, textvariable=phoneToAlert_Var, background="#808B96", foreground="#CACFD2")        
 
         def setPhoneNumber(*args):
@@ -81,10 +82,12 @@ def configMenuAler():
 
         phoneToAlert_Lbl.grid(row=0, column=0)
         phoneToAlert.grid(row=0, column=1)
-        phoneToAlert_TestBtn.grid(row=1, column=0, columnspan=2)
+        phoneToAlert_Lb2.grid(row=1, column=0, columnspan=2)
+        phoneToAlert_TestBtn.grid(row=2, column=0, columnspan=2)
 
         phoneToAlert.grid_columnconfigure(0, weight=1)
         phoneToAlert.grid_columnconfigure(1, weight=1)
+        phoneToAlert.grid_columnconfigure(2, weight=1)
 
         menuAlertRoot.config(padx=5, pady=5)
 
