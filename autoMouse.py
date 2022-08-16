@@ -209,7 +209,7 @@ changeNameApp = Entry(root, textvariable=changeNameApp_Var, background="#808B96"
 separator_1 = Separator(root, orient="horizontal")
 startMoveBtn = Button(root, heigh=4, width=20, text="Start Moving", command=startMove, background="#566573", foreground="#CACFD2")
 separator_2 = Separator(root, orient="horizontal")
-controlScreenBtn = Button(root, text="Screen Control", command=configControlScreen, background="#566573", foreground="#CACFD2")
+controlScreenBtn = Button(root, text="ControlScreen", command=configControlScreen, background="#566573", foreground="#CACFD2")
 checkSCType = Checkbutton(root, text="Any", variable=checkSCType_Var, command=cUEntry, background="#212F3C", 
 foreground="#CACFD2", activebackground="#212F3C", activeforeground="#CACFD2", selectcolor="#808B96")
 checkAlertSound = Checkbutton(root, text="AlertSound", variable=checkAlertSound_Var, foreground="#CACFD2", background="#212F3C", 
