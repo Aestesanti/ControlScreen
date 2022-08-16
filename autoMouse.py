@@ -14,7 +14,6 @@ root.title("ControlScreen v1.0.0")
 root.eval("tk::PlaceWindow . center")
 root.configure(background="#212F3C")
 root.resizable(False, False)
-#root.iconphoto(True, icon)
 root.wm_iconphoto(True, icon)
 
 #Variables list:
@@ -59,7 +58,6 @@ def configMenuAler():
 
         def setPhoneNumber(*args):
             if phoneToAlert_Var.get() != "" and "+" == phoneToAlert_Var.get()[0] and phoneToAlert_Var.get().replace("+","").isnumeric():
-                print (phoneToAlert_Var.get())
                 menuAlertRoot.destroy()
                 return True
             else:
@@ -96,10 +94,8 @@ def configMenuAler():
 def cUEntry():
     if checkSCType_Var.get() == 1:
         appTitleToFind.config(state="disabled")
-        print("NO ACTIVO ENTRY")
     elif checkSCType_Var.get() == 0:
         appTitleToFind.config(state="normal")
-        print("Activo entry")
 
 def configControlScreen():
     global listApssAtStart, isLoopControl
@@ -110,7 +106,7 @@ def configControlScreen():
     listApssAtStart = pygetwindow.getAllTitles()
     isLoopControl =True
     statusLbl.config(text="Press 'Alt + s' to cancel all systems")
-    print("Hay "+ str(len(listApssAtStart)) + " ventanas ejecutandose")
+    #print(str(len(listApssAtStart)) + " aplications running")
     startControlScreen()
 
 def startControlScreen():
@@ -118,8 +114,7 @@ def startControlScreen():
     if isLoopControl:
         listApssAtNow = pygetwindow.getAllTitles()
 
-        if checkSCType_Var.get() == 0:
-            print ("BUSCANDO APP CONCRETA")
+        if checkSCType_Var.get() == 0: # Looking for specific app
             findApp = appTitleToFind_Var.get()
             
             for app in listApssAtNow:
@@ -128,21 +123,19 @@ def startControlScreen():
 
         elif checkSCType_Var.get() == 1:        
 
-            if len(listApssAtNow) > len(listApssAtStart): #Salta la alarma si se cumple
+            if len(listApssAtNow) > len(listApssAtStart): # If True Alarm
                 activateAlarm()
 
         root.after(2000, startControlScreen)            
-    else:
+    else: # Stop control screen 
         isLoopControl = True
         listApssAtStart.clear()
-        print("Paramos el control de screen")
-        #Paramos tb el automove
-        finishMove()
+        finishMove() # Stop automove
         startMove()
 
 def sendPhoneAlert(nameApp):
     if checkAlertMssg_Var.get() == 1:
-        pywhatkit.sendwhats_image(phoneToAlert_Var.get(), "./Screenshot.png", "Ha saltado alarma, con: " + nameApp, tab_close=True)
+        pywhatkit.sendwhats_image(phoneToAlert_Var.get(), "./Screenshot.png", "Alarm with: " + nameApp, tab_close=True)
     
 
 def playSoundAlert():
@@ -180,10 +173,8 @@ def startMove(*args):
             pyautogui.moveTo(x+moveX, y+moveY, moveTransition)
             root.after(500, startMove)
         else:
-            print("REPETIMOS")
-            root.after(500, startMove)
-    else:
-        print("paramos")
+            root.after(500, startMove) # Repeat after 0,5s
+    else: # Stop mouse movement
         isLoopMove = True
 
 
@@ -191,7 +182,7 @@ def finishMove(*args):
     global isLoopMove
     isLoopMove = False
     startMoveBtn.config(background="#566573", relief="raised", foreground="#CACFD2")
-    statusLbl.config(text="Etiqueta de estado")
+    statusLbl.config(text="All systems off")
     root.update()
 
 def currentResolution():
@@ -199,7 +190,7 @@ def currentResolution():
 
 def globalSituation():
     positionX, positionY = pyautogui.position()
-    print("Mouse position: X=", positionX, "Y=", positionY)
+    #print("Mouse position: X=", positionX, "Y=", positionY)
 
     return positionX, positionY
 
@@ -226,7 +217,7 @@ activebackground="#212F3C", activeforeground="#CACFD2", selectcolor="#808B96")
 checkAlertMssg = Checkbutton(root, text="WhatsappAlert", variable=checkAlertMssg_Var, command=configMenuAler, foreground="#CACFD2", background="#212F3C",
 activebackground="#212F3C", activeforeground="#CACFD2", selectcolor="#808B96")
 appTitleToFind = Entry(root, state="disabled", textvariable=appTitleToFind_Var, background="#808B96", foreground="#CACFD2", disabledbackground="#131313", disabledforeground="#DBDBDB")
-statusLbl = Label(root, text="Etiqueta de estado", background="#212F3C", foreground="#CACFD2")
+statusLbl = Label(root, text="All systems off", background="#212F3C", foreground="#CACFD2")
 configResLbl = Label(root, text=configResLblText, background="#212F3C", foreground="#CACFD2")
 
 changeNameAppLbl.grid(row=0, column=0)
