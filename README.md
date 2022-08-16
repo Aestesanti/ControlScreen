@@ -11,5 +11,5 @@ ControlScreen is a little python tool to make randomized mouse movements, and to
 
 ## Screenshots
 ![Image1][1] ![Image2][2]
-[1]:(https://github.com/Aestesanti/ControlScreen/blob/develop/MDimages/controlScreen_01.png?raw=true "ControlScreen_Overview")
-[2]:(https://github.com/Aestesanti/ControlScreen/blob/develop/MDimages/controlScreen_01.png?raw=true "ControlScreen_Overview")
+[1]: https://github.com/Aestesanti/ControlScreen/blob/develop/MDimages/controlScreen_01.png?raw=true "ControlScreen_Overview"
+[2]: https://github.com/Aestesanti/ControlScreen/blob/develop/MDimages/controlScreen_configPhoneMenu.png?raw=true "ControlScreen_ConfigPhoneMenu"
